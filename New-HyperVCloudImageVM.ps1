@@ -571,7 +571,54 @@ growpart:
 apt:
 #  http_proxy: http://host:port
 #  https_proxy: http://host:port
-  preserve_sources_list: true
+  preserve_sources_list: false
+  # mirror in china
+  primary:
+    # arches is list of architectures the following config applies to
+    # the special keyword "default" applies to any architecture not explicitly
+    # listed.
+    - arches: [amd64, i386, default]
+      # uri is just defining the target as-is
+      uri: https://mirror.nju.edu.cn/ubuntu
+      #
+      # via search one can define lists that are tried one by one.
+      # The first with a working DNS resolution (or if it is an IP) will be
+      # picked. That way one can keep one configuration for multiple
+      # subenvironments that select the working one.
+      search:
+        - https://mirrors.sustech.edu.cn/ubuntu
+        - https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+        - https://mirror.nju.edu.cn/ubuntu
+      # if no mirror is provided by uri or search but 'search_dns' is
+      # true, then search for dns names '<distro>-mirror' in each of
+      # - fqdn of this host per cloud metadata
+      # - localdomain
+      # - no domain (which would search domains listed in /etc/resolv.conf)
+      # If there is a dns entry for <distro>-mirror, then it is assumed that
+      # there is a distro mirror at http://<distro>-mirror.<domain>/<distro>
+      #
+      # That gives the cloud provider the opportunity to set mirrors of a distro
+      # up and expose them only by creating dns entries.
+      #
+      # if none of that is found, then the default distro mirror is used
+      search_dns: false
+      #
+      # If multiple of a category are given
+      #   1. uri
+      #   2. search
+      #   3. search_dns
+      # the first defining a valid mirror wins (in the order as defined here,
+      # not the order as listed in the config).
+      #
+      # Additionally, if the repository requires a custom signing key, it can be
+      # specified via the same fields as for custom sources:
+      #   'keyid': providing a key to import via shortid or fingerprint
+      #   'key': providing a raw PGP key
+      #   'keyserver': specify an alternate keyserver to pull keys from that
+      #                were specified by keyid
+  security:
+    - uri: http://security.ubuntu.com/ubuntu
+      arches: [default]
 
 package_update: true
 package_upgrade: true
