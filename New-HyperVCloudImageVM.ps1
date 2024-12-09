@@ -658,7 +658,6 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     lock_passwd: false
     plain_text_passwd: $($GuestAdminPassword)
-    lock_passwd: false
 $(if (-not [string]::IsNullOrEmpty($GuestAdminSshPubKey)) {
 "    ssh_authorized_keys:
     - $GuestAdminSshPubKey
@@ -703,6 +702,27 @@ $(if ($ImageTypeAzure) { "
   # documented keyboard option, but not implemented ?
   # change keyboard layout, src: https://askubuntu.com/a/784816
   - [ sh, -c, sed -i 's/XKBLAYOUT=\"\w*"/XKBLAYOUT=\"'$($KeyboardLayout)'\"/g' /etc/default/keyboard ]
+  - [ sh , -c , apt install zsh -y ]
+  - [ sh , -c , chsh -s /bin/zsh nbtca ]
+  - [ sh , -c , apt install git -y ]
+  - [ sh , -c , apt install curl -y ]
+  - [ sh , -c , apt install wget -y ]
+  - [ sh , -c , apt install tmux -y ]
+  - [ sh , -c , apt install htop -y ]
+  - [ sh , -c , apt install screen -y ]
+  - [ sh , -c , apt install figlet -y ]
+  - [ sh , -c , apt install neovim -y ]
+  - [ sh , -c , update-alternatives --set vim /usr/bin/nvim ]
+  - apt-get install -y zsh
+  - runuser -l $($GuestAdminUsername) -c 'sh -c "`$(curl -fsSL https://raw.githubusercontent.com/coreycole/oh-my-zsh/master/tools/install.sh)"' 
+  - chsh -s `$(which zsh) $($GuestAdminUsername)
+  - fgGreen='%{`$fg[green]%}'
+  - fgCyan='%{`$fg[cyan]%}'
+  - fgReset='%{`$reset_color%}'
+  - retStatus='`${ret_status}'
+  - gitInfo='`$(git_prompt_info)'
+  - runuser -l $($GuestAdminUsername) -c "echo export PROMPT=\''`${fgGreen}%n@%m`${fgReset} `${retStatus} `${fgCyan}%c`${fgReset} `${gitInfo}'\'" >> /home/$($GuestAdminUsername)/.zshrc
+  - echo "source ~/.profile" >> /home/$($GuestAdminUsername)/.zshrc
 
 write_files:
   # hyperv-daemons package in mosts distros is missing this file and spamming syslog:
