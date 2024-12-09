@@ -725,6 +725,11 @@ $(if ($ImageTypeAzure) { "
   - echo "source ~/.profile" >> /home/$($GuestAdminUsername)/.zshrc
 
 write_files:
+  - content: |
+      #!/bin/sh
+      figlet -f lean "NBTCA" | tr ' _/' ' ||'
+    path: /etc/update-motd.d/11-logo
+    permissions: "0755"
   # hyperv-daemons package in mosts distros is missing this file and spamming syslog:
   # https://github.com/torvalds/linux/blob/master/tools/hv/hv_get_dns_info.sh
   - content: |
