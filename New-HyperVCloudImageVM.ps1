@@ -77,7 +77,7 @@ param(
   [string] $GuestAdminSshPubKeyFile,
   [string] $ImageVersion = "22.04", # $ImageName ="focal" # 20.04 LTS , $ImageName="bionic" # 18.04 LTS
   [string] $ImageRelease = "release", # default option is get latest but could be fixed to some specific version for example "release-20210413"
-  [string] $ImageBaseUrl = "http://cloud-images.ubuntu.com/releases", # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+  [string] $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases", # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
   [bool] $BaseImageCheckForUpdate = $true, # check for newer image at Distro cloud-images site
   [bool] $BaseImageCleanup = $true, # delete old vhd image. Set to false if using (TODO) differencing VHD
   [switch] $ShowSerialConsoleWindow = $false,
@@ -181,7 +181,7 @@ Switch ($ImageVersion) {
     $ImageVersionName = "bionic"
     $ImageVersion = "18.04"
     $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
-    $ImageBaseUrl = "http://cloud-images.ubuntu.com/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
     $ImageUrlRoot = "$ImageBaseUrl/$ImageVersionName/$ImageRelease/" # latest
     $ImageFileName = "$ImageOS-$ImageVersion-server-cloudimg-amd64"
     $ImageFileExtension = "img"
@@ -195,7 +195,7 @@ Switch ($ImageVersion) {
     $ImageVersionName = "focal"
     $ImageVersion = "20.04"
     $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
-    $ImageBaseUrl = "http://cloud-images.ubuntu.com/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
     $ImageUrlRoot = "$ImageBaseUrl/$ImageVersionName/$ImageRelease/" # latest
     $ImageFileName = "$ImageOS-$ImageVersion-server-cloudimg-amd64"
     $ImageFileExtension = "img"
@@ -209,7 +209,7 @@ Switch ($ImageVersion) {
     $ImageVersionName = "jammy"
     $ImageVersion = "22.04"
     $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
-    $ImageBaseUrl = "http://cloud-images.ubuntu.com/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
     $ImageUrlRoot = "$ImageBaseUrl/$ImageVersionName/$ImageRelease/" # latest
     $ImageFileName = "$ImageOS-$ImageVersion-server-cloudimg-amd64"
     $ImageFileExtension = "img"
@@ -226,7 +226,7 @@ Switch ($ImageVersion) {
     #$ImageVersionName = "jammy"
     $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
     # https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-azure.vhd.tar.gz
-    $ImageBaseUrl = "http://cloud-images.ubuntu.com/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
     $ImageUrlRoot = "$ImageBaseUrl/jammy/$ImageRelease/" # latest
     $ImageFileName = "$ImageOS-22.04-server-cloudimg-amd64-azure" # should contain "vhd.*" version
     $ImageFileExtension = "vhd.tar.gz" # or "vhd.zip" on older releases
@@ -240,7 +240,7 @@ Switch ($ImageVersion) {
     $ImageVersionName = "noble"
     $ImageVersion = "24.04"
     $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
-    $ImageBaseUrl = "http://cloud-images.ubuntu.com/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
     $ImageUrlRoot = "$ImageBaseUrl/$ImageVersionName/$ImageRelease/" # latest
     $ImageFileName = "$ImageOS-$ImageVersion-server-cloudimg-amd64"
     $ImageFileExtension = "img"
@@ -257,7 +257,7 @@ Switch ($ImageVersion) {
     $ImageVersionName = "noble"
     $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
     # https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-azure.vhd.tar.gz
-    $ImageBaseUrl = "http://cloud-images.ubuntu.com/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
     $ImageUrlRoot = "$ImageBaseUrl/noble/$ImageRelease/" # latest
     $ImageFileName = "$ImageOS-24.04-server-cloudimg-amd64-azure" # should contain "vhd.*" version
     $ImageFileExtension = "vhd.tar.gz" # or "vhd.zip" on older releases
