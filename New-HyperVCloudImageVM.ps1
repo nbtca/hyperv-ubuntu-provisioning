@@ -723,6 +723,9 @@ $(if ($ImageTypeAzure) { "
   - gitInfo='`$(git_prompt_info)'
   - runuser -l $($GuestAdminUsername) -c "echo export PROMPT=\''`${fgGreen}%n@%m`${fgReset} `${retStatus} `${fgCyan}%c`${fgReset} `${gitInfo}'\'" >> /home/$($GuestAdminUsername)/.zshrc
   - echo "source ~/.profile" >> /home/$($GuestAdminUsername)/.zshrc
+  # docker ce
+  - export DOWNLOAD_URL="https://mirror.nju.edu.cn/docker-ce"
+  - wget -O- https://get.docker.com/ | sh
 
 write_files:
   - content: |
