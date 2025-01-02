@@ -712,6 +712,7 @@ $(if ($ImageTypeAzure) { "
   - [ sh , -c , apt install screen -y ]
   - [ sh , -c , apt install figlet -y ]
   - [ sh , -c , apt install neovim -y ]
+  - [ sh , -c , apt install net-tools -y ]
   - [ sh , -c , update-alternatives --set vim /usr/bin/nvim ]
   - apt-get install -y zsh
   - runuser -l $($GuestAdminUsername) -c 'sh -c "`$(curl -fsSL https://raw.githubusercontent.com/coreycole/oh-my-zsh/master/tools/install.sh)"' 
@@ -726,6 +727,8 @@ $(if ($ImageTypeAzure) { "
   # docker ce
   - export DOWNLOAD_URL="https://mirror.nju.edu.cn/docker-ce"
   - wget -O- https://get.docker.com/ | sh
+  - usermod -aG docker $($GuestAdminUsername)
+  - mkdir -p /home/$($GuestAdminUsername)/stacks
 
 write_files:
   - content: |
