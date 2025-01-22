@@ -149,6 +149,20 @@ function cleanupFile ([string]$file) {
   }
 }
 
+# Helper function for set file attribute to not compressed
+function insureFileNotCompressed([string]$file) {
+  if (Test-Path $file) {
+    $fileAttributes = Get-Item $file | Select-Object -ExpandProperty Attributes
+    if ($fileAttributes -band [System.IO.FileAttributes]::Compressed) {
+      Write-Verbose "File is compressed: $file"
+      Write-Verbose "Removing compression attribute from file: $file"
+      compact.exe /u "$file"
+    }
+  }
+  else {
+    Write-Output "File does not exist: $file"
+  }
+}
 # set system wide place to put all data created by the script
 # $dataPath = "$env:ProgramData\hyperv-vm-provisioning"
 
@@ -1062,6 +1076,7 @@ if (!(test-path "$($ImageCachePath)\$($ImageOS)-$($stamp).vhd")) {
 
     Write-Host 'Convert VHD fixed to VHD dynamic...' -NoNewline
     try {
+      insureFileNotCompressed "$($ImageCachePath)\$ImageFileName.vhd"
       Convert-VHD -Path "$($ImageCachePath)\$ImageFileName.vhd" -DestinationPath "$($ImageCachePath)\$($ImageOS)-$($stamp).vhd" -VHDType Dynamic -DeleteSource
       Write-Host -ForegroundColor Green " Done."
     } catch {
@@ -1084,7 +1099,7 @@ if (!(test-path "$($ImageCachePath)\$($ImageOS)-$($stamp).vhd")) {
       Write-Verbose "cache folder: about to delete all but txt and vhd files"
       Get-ChildItem "$($ImageCachePath)" -Exclude @("*.txt","*.vhd") | Remove-Item -Force
     }
-
+    insureFileNotCompressed "$($ImageCachePath)\$($ImageOS)-$($stamp).vhd"
     # since VHD's are sitting in the cache lets make them as small as posible
     & "$PSScriptRoot\Compact-VHD.ps1" -Path "$($ImageCachePath)\$($ImageOS)-$($stamp).vhd"
 
