@@ -733,7 +733,9 @@ $(if ($ImageTypeAzure) { "
   - [ sh , -c , apt install net-tools -y ]
   - [ sh , -c , update-alternatives --set vim /usr/bin/nvim ]
   - apt-get install -y zsh
-  - runuser -l $($GuestAdminUsername) -c 'sh -c "`$(curl -fsSL https://raw.githubusercontent.com/coreycole/oh-my-zsh/master/tools/install.sh)"' 
+  # - runuser -l $($GuestAdminUsername) -c 'sh -c "`$(curl -fsSL https://raw.githubusercontent.com/coreycole/oh-my-zsh/master/tools/install.sh)"' 
+  - git clone https://mirror.nju.edu.cn/git/ohmyzsh.git /home/$($GuestAdminUsername)/.oh-my-zsh
+  - cp /home/$($GuestAdminUsername)/.oh-my-zsh/templates/zshrc.zsh-template /home/$($GuestAdminUsername)/.zshrc
   - chsh -s `$(which zsh) $($GuestAdminUsername)
   - fgGreen='%{`$fg[green]%}'
   - fgCyan='%{`$fg[cyan]%}'
