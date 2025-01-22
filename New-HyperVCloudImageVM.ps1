@@ -150,7 +150,11 @@ function cleanupFile ([string]$file) {
 }
 
 # set system wide place to put all data created by the script
-$dataPath = "$env:ProgramData\hyperv-vm-provisioning"
+# $dataPath = "$env:ProgramData\hyperv-vm-provisioning"
+
+$dataPath = Join-Path $PSScriptRoot "data"
+if (!(test-path $dataPath)) { mkdir -Path $dataPath | out-null }
+# "$env:ProgramData\hyperv-vm-provisioning"
 $cachePath = "$dataPath\cache"
 if (!(test-path $cachePath)) {mkdir -Path $cachePath | out-null}
 Write-Verbose "Using cache path: $cachePath"
