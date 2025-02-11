@@ -597,16 +597,16 @@ apt:
     # listed.
     - arches: [amd64, i386, default]
       # uri is just defining the target as-is
-      uri: https://mirror.nju.edu.cn/ubuntu
+      uri: https://mirror.nju.edu.cn/$($ImageOS)
       #
       # via search one can define lists that are tried one by one.
       # The first with a working DNS resolution (or if it is an IP) will be
       # picked. That way one can keep one configuration for multiple
       # subenvironments that select the working one.
       search:
-        - https://mirrors.sustech.edu.cn/ubuntu
-        - https://mirrors.tuna.tsinghua.edu.cn/ubuntu
-        - https://mirror.nju.edu.cn/ubuntu
+        - https://mirrors.sustech.edu.cn/$($ImageOS)
+        - https://mirrors.tuna.tsinghua.edu.cn/$($ImageOS)
+        - https://mirror.nju.edu.cn/$($ImageOS)
       # if no mirror is provided by uri or search but 'search_dns' is
       # true, then search for dns names '<distro>-mirror' in each of
       # - fqdn of this host per cloud metadata
@@ -635,7 +635,7 @@ apt:
       #   'keyserver': specify an alternate keyserver to pull keys from that
       #                were specified by keyid
   security:
-    - uri: http://security.ubuntu.com/ubuntu
+    - uri: $(if ($ImageOS -eq "debian") {"https://security.debian.org/debian-security"} elseif ($ImageOS -eq "ubuntu") {"http://security.ubuntu.com/ubuntu"})
       arches: [default]
 
 package_update: true
@@ -721,7 +721,7 @@ $(if ($ImageTypeAzure) { "
   # change keyboard layout, src: https://askubuntu.com/a/784816
   - [ sh, -c, sed -i 's/XKBLAYOUT=\"\w*"/XKBLAYOUT=\"'$($KeyboardLayout)'\"/g' /etc/default/keyboard ]
   - [ sh , -c , apt install zsh -y ]
-  - [ sh , -c , chsh -s /bin/zsh nbtca ]
+  - [ sh , -c , chsh -s /bin/zsh $($GuestAdminUsername) ]
   - [ sh , -c , apt install git -y ]
   - [ sh , -c , apt install curl -y ]
   - [ sh , -c , apt install wget -y ]
