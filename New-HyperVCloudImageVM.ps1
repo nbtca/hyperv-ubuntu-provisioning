@@ -72,6 +72,7 @@ param(
   [string] $CloudInitPowerState = "reboot", # poweroff, halt, or reboot , https://cloudinit.readthedocs.io/en/latest/reference/modules.html#power-state-change
   [string] $CustomUserDataYamlFile,
   [string] $GuestAdminUsername = "admin",
+  [string] $LOGO = "",
   [string] $GuestAdminPassword = "Passw0rd",
   [string] $GuestAdminSshPubKey,
   [string] $GuestAdminSshPubKeyFile,
@@ -568,6 +569,10 @@ if ($null -ne $network_write_files) {
   Write-Verbose ""
 }
 
+if ("" -eq $LOGO) { 
+  $LOGO = $VMName.ToUpper()
+}
+
 # userdata for cloud-init, https://cloudinit.readthedocs.io/en/latest/topics/examples.html
 $userdata = @"
 #cloud-config
@@ -746,14 +751,15 @@ $(if ($ImageTypeAzure) { "
   - echo "source ~/.profile" >> /home/$($GuestAdminUsername)/.zshrc
   # docker ce
   - export DOWNLOAD_URL="https://mirror.nju.edu.cn/docker-ce"
-  - wget -O- https://get.docker.com/ | sh
+  # original: https://get.docker.com/
+  - wget -O- https://cdn.jsdelivr.net/gh/docker/docker-install/install.sh | sh 
   - usermod -aG docker $($GuestAdminUsername)
   - mkdir -p /home/$($GuestAdminUsername)/stacks
 
 write_files:
   - content: |
       #!/bin/sh
-      figlet -f lean "NBTCA" | tr ' _/' ' ||'
+      figlet -f lean "$($LOGO)" | tr ' _/' ' ||'
     path: /etc/update-motd.d/11-logo
     permissions: "0755"
   # hyperv-daemons package in mosts distros is missing this file and spamming syslog:
