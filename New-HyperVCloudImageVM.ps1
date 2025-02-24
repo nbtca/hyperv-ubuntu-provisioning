@@ -742,7 +742,7 @@ $(if ($ImageTypeAzure) { "
   - fgReset='%{`$reset_color%}'
   - retStatus='`${ret_status}'
   - gitInfo='`$(git_prompt_info)'
-  - runuser -l $($GuestAdminUsername) -c "echo export PROMPT=\''`${fgGreen}%n@%m`${fgReset} `${retStatus} `${fgCyan}%c`${fgReset} `${gitInfo}'\'" >> /home/$($GuestAdminUsername)/.zshrc
+  - runuser -l $($GuestAdminUsername) -c "echo export PROMPT=\''`${fgGreen}%n@%m`${fgReset} `${retStatus} `${fgCyan}%/`${fgReset} `${gitInfo}'\'" >> /home/$($GuestAdminUsername)/.zshrc
   - echo "source ~/.profile" >> /home/$($GuestAdminUsername)/.zshrc
   # docker ce
   - export DOWNLOAD_URL="https://mirror.nju.edu.cn/docker-ce"
