@@ -661,7 +661,20 @@ elseif (($ImageOS -eq "ubuntu")) {
   - eject
   - console-setup
   - keyboard-configuration
-
+  # extra
+  - zsh
+  - git
+  - curl
+  - wget
+  - tmux
+  - htop
+  - screen
+  - figlet
+  - neovim
+  - net-tools
+  # desktop
+  - ubuntu-desktop
+  - gdm3
 # documented keyboard option, but not implemented ?
 # https://cloudinit.readthedocs.io/en/latest/topics/modules.html#keyboard
 # https://github.com/sulmone/X11/blob/59029dc09211926a5c95ff1dd2b828574fefcde6/share/X11/xkb/rules/xorg.lst#L181
@@ -725,19 +738,8 @@ $(if ($ImageTypeAzure) { "
   # documented keyboard option, but not implemented ?
   # change keyboard layout, src: https://askubuntu.com/a/784816
   - [ sh, -c, sed -i 's/XKBLAYOUT=\"\w*"/XKBLAYOUT=\"'$($KeyboardLayout)'\"/g' /etc/default/keyboard ]
-  - [ sh , -c , apt install zsh -y ]
   - [ sh , -c , chsh -s /bin/zsh $($GuestAdminUsername) ]
-  - [ sh , -c , apt install git -y ]
-  - [ sh , -c , apt install curl -y ]
-  - [ sh , -c , apt install wget -y ]
-  - [ sh , -c , apt install tmux -y ]
-  - [ sh , -c , apt install htop -y ]
-  - [ sh , -c , apt install screen -y ]
-  - [ sh , -c , apt install figlet -y ]
-  - [ sh , -c , apt install neovim -y ]
-  - [ sh , -c , apt install net-tools -y ]
   - [ sh , -c , update-alternatives --set vim /usr/bin/nvim ]
-  - apt-get install -y zsh
   # - runuser -l $($GuestAdminUsername) -c 'sh -c "`$(curl -fsSL https://raw.githubusercontent.com/coreycole/oh-my-zsh/master/tools/install.sh)"' 
   - git clone https://mirror.nju.edu.cn/git/ohmyzsh.git /home/$($GuestAdminUsername)/.oh-my-zsh
   - cp /home/$($GuestAdminUsername)/.oh-my-zsh/templates/zshrc.zsh-template /home/$($GuestAdminUsername)/.zshrc
@@ -958,7 +960,6 @@ if (test-path $BaseImageStampFile) {
 }
 if ($BaseImageCheckForUpdate -or ($stamp -eq '')) {
   $url = $ImageManifestUrl
-
   try {
     $lastModified = (Invoke-WebRequest -TimeoutSec 12 -UseBasicParsing "$url").Headers.'Last-Modified'
     $stamp=[DateTime]::Parse($lastModified).ToUniversalTime().ToString("yyyyMMddHHmmss")
