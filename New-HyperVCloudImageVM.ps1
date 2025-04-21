@@ -278,9 +278,40 @@ Switch ($ImageVersion) {
     $ImageVersionName = "noble"
     $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
     # https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-azure.vhd.tar.gz
-    $ImageBaseUrl = "https://cloud-images.ubuntu.com/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
     $ImageUrlRoot = "$ImageBaseUrl/noble/$ImageRelease/" # latest
     $ImageFileName = "$ImageOS-24.04-server-cloudimg-amd64-azure" # should contain "vhd.*" version
+    $ImageFileExtension = "vhd.tar.gz" # or "vhd.zip" on older releases
+    # Manifest file is used for version check based on last modified HTTP header
+    $ImageHashFileName = "SHA256SUMS"
+    $ImageManifestUrl = "$($ImageUrlRoot)$($ImageFileName).vhd.manifest"
+    break
+  }
+  { "25.04", "plucky" -eq $_ } {
+    $ImageOS = "ubuntu"
+    $ImageVersionName = "plucky"
+    $ImageVersion = "25.04"
+    $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageUrlRoot = "$ImageBaseUrl/$ImageVersionName/$ImageRelease/" # latest
+    $ImageFileName = "$ImageOS-$ImageVersion-server-cloudimg-amd64"
+    $ImageFileExtension = "img"
+    # Manifest file is used for version check based on last modified HTTP header
+    $ImageHashFileName = "SHA256SUMS"
+    $ImageManifestUrl = "$($ImageUrlRoot)$($ImageFileName).manifest"
+    break
+  }
+  { "25.04-azure", "plucky-azure" -eq $_ } {
+    $ImageTypeAzure = $true
+    $ConvertImageToNoCloud = $true
+    $ImageOS = "ubuntu"
+    $ImageVersion = "25.04-azure"
+    $ImageVersionName = "plucky"
+    $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
+    # https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-azure.vhd.tar.gz
+    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageUrlRoot = "$ImageBaseUrl/$ImageVersionName/$ImageRelease/" # latest
+    $ImageFileName = "$ImageOS-25.04-server-cloudimg-amd64-azure" # should contain "vhd.*" version
     $ImageFileExtension = "vhd.tar.gz" # or "vhd.zip" on older releases
     # Manifest file is used for version check based on last modified HTTP header
     $ImageHashFileName = "SHA256SUMS"
