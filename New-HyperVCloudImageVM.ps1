@@ -740,6 +740,7 @@ $(if ($ImageTypeAzure) { "
   - [ sh, -c, sed -i 's/XKBLAYOUT=\"\w*"/XKBLAYOUT=\"'$($KeyboardLayout)'\"/g' /etc/default/keyboard ]
   - [ sh , -c , chsh -s /bin/zsh $($GuestAdminUsername) ]
   - [ sh , -c , update-alternatives --set vim /usr/bin/nvim ]
+  - curl -s https://install.zerotier.com | sudo bash
   # - runuser -l $($GuestAdminUsername) -c 'sh -c "`$(curl -fsSL https://raw.githubusercontent.com/coreycole/oh-my-zsh/master/tools/install.sh)"' 
   - git clone https://mirror.nju.edu.cn/git/ohmyzsh.git /home/$($GuestAdminUsername)/.oh-my-zsh
   - cp /home/$($GuestAdminUsername)/.oh-my-zsh/templates/zshrc.zsh-template /home/$($GuestAdminUsername)/.zshrc
