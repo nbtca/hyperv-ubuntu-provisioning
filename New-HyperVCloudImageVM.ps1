@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
   Provision Cloud images on Hyper-V
 .EXAMPLE
@@ -83,7 +83,9 @@ param(
   [bool] $BaseImageCleanup = $true, # delete old vhd image. Set to false if using (TODO) differencing VHD
   [switch] $ShowSerialConsoleWindow = $false,
   [switch] $ShowVmConnectWindow = $false,
-  [switch] $Force = $false
+  [switch] $Force = $false,
+  [switch] $PreInstallDocker = $false,
+  [switch] $PreInstallGnomeDesktop = $false
 )
 
 [System.Threading.Thread]::CurrentThread.CurrentUICulture = "en-US"
@@ -276,7 +278,7 @@ Switch ($ImageVersion) {
     $ImageVersionName = "noble"
     $ImageRelease = "release" # default option is get latest but could be fixed to some specific version for example "release-20210413"
     # https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64-azure.vhd.tar.gz
-    $ImageBaseUrl = "https://mirror.nju.edu.cn/ubuntu-cloud-images/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
+    $ImageBaseUrl = "https://cloud-images.ubuntu.com/releases" # alternative https://mirror.scaleuptech.com/ubuntu-cloud-images/releases
     $ImageUrlRoot = "$ImageBaseUrl/noble/$ImageRelease/" # latest
     $ImageFileName = "$ImageOS-24.04-server-cloudimg-amd64-azure" # should contain "vhd.*" version
     $ImageFileExtension = "vhd.tar.gz" # or "vhd.zip" on older releases
@@ -673,8 +675,10 @@ elseif (($ImageOS -eq "ubuntu")) {
   - neovim
   - net-tools
   # desktop
+$(if ($PreInstallGnomeDesktop) { "
   - ubuntu-desktop
   - gdm3
+" })
 # documented keyboard option, but not implemented ?
 # https://cloudinit.readthedocs.io/en/latest/topics/modules.html#keyboard
 # https://github.com/sulmone/X11/blob/59029dc09211926a5c95ff1dd2b828574fefcde6/share/X11/xkb/rules/xorg.lst#L181
@@ -752,12 +756,19 @@ $(if ($ImageTypeAzure) { "
   - gitInfo='`$(git_prompt_info)'
   - runuser -l $($GuestAdminUsername) -c "echo export PROMPT=\''`${fgGreen}%n@%m`${fgReset} `${retStatus} `${fgCyan}%/`${fgReset} `${gitInfo}'\'" >> /home/$($GuestAdminUsername)/.zshrc
   - echo "source ~/.profile" >> /home/$($GuestAdminUsername)/.zshrc
+$(if ($PreInstallDocker) { "
   # docker ce
-  - export DOWNLOAD_URL="https://mirror.nju.edu.cn/docker-ce"
+  - export DOWNLOAD_URL='https://mirror.nju.edu.cn/docker-ce'
   # original: https://get.docker.com/
   - wget -O- https://cdn.jsdelivr.net/gh/docker/docker-install/install.sh | sh 
   - usermod -aG docker $($GuestAdminUsername)
   - mkdir -p /home/$($GuestAdminUsername)/stacks
+" })
+$(if ($PreInstallGnomeDesktop) { "
+  - runuser -l $($GuestAdminUsername) -c 'dpkg-reconfigure gdm3'
+  - runuser -l $($GuestAdminUsername) -c 'systemctl set-default graphical.target'
+  - runuser -l $($GuestAdminUsername) -c 'systemctl enable gdm3'
+" })
 
 write_files:
   - content: |
